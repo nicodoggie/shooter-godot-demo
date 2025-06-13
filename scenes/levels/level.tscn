@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=4 uid="uid://k7vbjjk7f0ow"]
+
+[ext_resource type="Script" uid="uid://b0w0dlwokcgdd" path="res://scenes/level.gd" id="1_xb4v1"]
+[ext_resource type="Texture2D" uid="uid://bl1w071qjv41s" path="res://graphics/ground/stones.png" id="2_xb4v1"]
+[ext_resource type="PackedScene" uid="uid://cuvyg3v5153ve" path="res://scenes/objects/gate.tscn" id="3_b2cq8"]
+[ext_resource type="Texture2D" uid="uid://c6hg4dy66xbpg" path="res://graphics/decals/moss/moss_1.png" id="3_mbbpy"]
+[ext_resource type="Texture2D" uid="uid://b72j8kxesy5wx" path="res://graphics/decals/moss/moss_3.png" id="4_ouxo3"]
+[ext_resource type="PackedScene" uid="uid://1bh4uwh2gi2i" path="res://scenes/player/player.tscn" id="4_xb4v1"]
+[ext_resource type="Texture2D" uid="uid://bcvgbmoolrhu6" path="res://graphics/decals/moss/moss_4.png" id="5_icy5c"]
+[ext_resource type="PackedScene" uid="uid://7fssx8jaj5ab" path="res://scenes/levels/house.tscn" id="6_icy5c"]
+[ext_resource type="TileSet" uid="uid://c7u1fs05tv8x7" path="res://scenes/levels/level.tres" id="6_ouxo3"]
+[ext_resource type="PackedScene" uid="uid://0mm6mgomt3fd" path="res://scenes/objects/steam_vent.tscn" id="6_rmjfq"]
+[ext_resource type="PackedScene" uid="uid://d4enksvcycwcv" path="res://scenes/objects/light_fan_animation.tscn" id="11_7pb6i"]
+[ext_resource type="PackedScene" uid="uid://cfefvdp4of3lp" path="res://scenes/enemies/drone.tscn" id="12_xfk5q"]
+
+[node name="Level" type="Node2D"]
+scale = Vector2(1, 0.998386)
+script = ExtResource("1_xb4v1")
+
+[node name="Ground" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Stones" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(200, 2111.41)
+scale = Vector2(0.995763, 1.13674)
+texture = ExtResource("2_xb4v1")
+region_enabled = true
+region_rect = Rect2(-17362.6, -520.618, 16000, 10000)
+
+[node name="Decoration" type="Sprite2D" parent="Ground"]
+modulate = Color(0.921569, 0.509804, 0.25098, 0.25098)
+position = Vector2(-492, 728)
+texture = ExtResource("3_mbbpy")
+
+[node name="Moss1" type="Sprite2D" parent="Ground/Decoration"]
+position = Vector2(2710, -143)
+rotation = -0.42247
+texture = ExtResource("3_mbbpy")
+
+[node name="Moss3" type="Sprite2D" parent="Ground/Decoration"]
+position = Vector2(2558, 254)
+rotation = 2.67759
+texture = ExtResource("4_ouxo3")
+
+[node name="Moss4" type="Sprite2D" parent="Ground/Decoration"]
+position = Vector2(-653, 333)
+rotation = -0.891765
+scale = Vector2(1, 1.16)
+texture = ExtResource("5_icy5c")
+
+[node name="SteamVent" parent="Ground" instance=ExtResource("6_rmjfq")]
+position = Vector2(-792, 2946)
+
+[node name="House" parent="Ground" instance=ExtResource("6_icy5c")]
+position = Vector2(4363, 2987)
+rotation = 1.57821
+
+[node name="SoilMap" type="TileMapLayer" parent="."]
+position = Vector2(440, -164)
+tile_map_data = PackedByteArray("AAD4/wQAAAABAAIAAAAHAAQAAQACAAIAAAD4/wAAAQABAAEAAAD4/wEAAQABAAEAAAD4/wIAAQABAAEAAAD4/wMAAQABAAEAAAAHAAAAAQABAAEAAAAHAAEAAQAAAAEAAAAHAAIAAQAAAAEAAAAHAAMAAQABAAEAAAADAP3/AAABAAAAAAAEAP3/AQABAAIAAAAFAP3/AQABAAIAAAAGAP3/AQABAAEAAAAGAAAAAQAAAAIAAAAGAP7/AQAAAAEAAAAGAP//AQAAAAEAAAAGAAQAAQACAAIAAAD5////AAACAAIAAAD5//7/AAAAAAIAAAD5//3/AAABAAEAAAD4////AAABAAEAAAD6//3/AAABAAAAAAD7//3/AAABAAAAAAD8//3/AAABAAAAAAD6/wAAAQAAAAAAAAD7/wAAAQABAAAAAAD6/wEAAQAAAAIAAAD7/wEAAQACAAIAAAAEAAMAAQAAAAAAAAAFAAMAAQABAAAAAAAGAAIAAQACAAAAAAAFAAIAAQAAAAAAAAAGAAMAAQABAAEAAAAFAAQAAQABAAEAAAAEAAQAAQAAAAIAAAD1/wQAAQABAAAAAAD0/wQAAQAAAAAAAAD0/wUAAQAAAAEAAAD1/wUAAQABAAEAAADw/wIAAQAAAAAAAADw/wMAAQAAAAEAAADw/wQAAQAAAAIAAADx/wIAAQABAAAAAADx/wMAAQABAAEAAADx/wQAAQABAAIAAADw/wUAAQAAAAAAAADx/wUAAQABAAAAAADw/wYAAQAAAAEAAADw/wcAAQAAAAIAAADx/wYAAQABAAEAAADx/wcAAQABAAIAAADv/wMAAQAAAAAAAADv/wQAAQAAAAAAAADv/wUAAQAAAAIAAADz/wQAAQACAAAAAADy/wQAAQACAAAAAAA=")
+tile_set = ExtResource("6_ouxo3")
+metadata/_edit_lock_ = true
+
+[node name="WallMap" type="TileMapLayer" parent="."]
+position = Vector2(447, -164)
+tile_map_data = PackedByteArray("AAD4/wQAAAABAAIAAAAHAAQAAAACAAIAAAD4/wAAAAAAAAIAAAD4/wEAAAAAAAIAAAD4/wIAAAAAAAIAAAD4/wMAAAAAAAIAAAAHAAAAAAACAAEAAAAHAAEAAAAAAAIAAAAHAAIAAAAAAAIAAAAHAAMAAAAAAAIAAAADAP3/AAABAAAAAAAEAP3/AAABAAAAAAAFAP3/AAABAAAAAAAGAP3/AAACAAEAAAAGAAAAAAABAAIAAAAGAP7/AAAAAAIAAAAGAP//AAAAAAIAAAAFAAQAAAABAAAAAAAGAAQAAAABAAAAAAD5////AAACAAIAAAD5//7/AAAAAAIAAAD5//3/AAABAAEAAAD4////AAABAAEAAAD6//3/AAABAAAAAAD7//3/AAABAAAAAAD8//3/AAABAAAAAAD6/wAAAQAAAAAAAAD7/wAAAQABAAAAAAD6/wEAAQAAAAIAAAD7/wEAAQACAAIAAAD5/wQAAAABAAAAAAD6/wQAAAABAAAAAAD7/wQAAAABAAAAAAD8/wQAAAABAAAAAAD9/wQAAAABAAAAAAD+/wQAAAABAAAAAAADAAQAAAABAAAAAAAEAAQAAAABAAAAAAA=")
+tile_set = ExtResource("6_ouxo3")
+metadata/_edit_lock_ = true
+
+[node name="Gate" parent="." instance=ExtResource("3_b2cq8")]
+position = Vector2(33, 168)
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." instance=ExtResource("4_xb4v1")]
+position = Vector2(447, 588.951)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(0.5, 0.5)
+position_smoothing_enabled = true
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+color = Color(0.31802, 0.31802, 0.31802, 1)
+blend_mode = 1
+
+[node name="Projectiles" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="LightFanAnimation" parent="." instance=ExtResource("11_7pb6i")]
+position = Vector2(3851, 2648.27)
+scale = Vector2(0.507558, 0.507558)
+autoplay = "default"
+frame_progress = 0.0637899
+
+[node name="Drone" parent="." instance=ExtResource("12_xfk5q")]
+position = Vector2(-1441, 1138.84)
+
+[connection signal="player_entered" from="Ground/House" to="." method="_on_house_player_entered"]
+[connection signal="player_exited" from="Ground/House" to="." method="_on_house_player_exited"]
+[connection signal="body_gate_entered" from="Gate" to="." method="_on_gate_body_gate_entered"]
+[connection signal="body_gate_exited" from="Gate" to="." method="_on_gate_body_gate_exited"]
+[connection signal="grenade_empty" from="Player" to="." method="_on_player_grenade_empty"]
+[connection signal="grenade_shot" from="Player" to="." method="_on_player_grenade_shot"]
+[connection signal="laser_empty" from="Player" to="." method="_on_player_laser_empty"]
+[connection signal="laser_shot" from="Player" to="." method="_on_player_laser_shot"]

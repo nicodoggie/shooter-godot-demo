@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://7jlo77tuujh7"]
+
+[ext_resource type="Texture2D" uid="uid://bbynavko376co" path="res://graphics/explosions/gun.png" id="1_rooea"]
+[ext_resource type="Texture2D" uid="uid://degexlv02th61" path="res://graphics/decals/white.png" id="2_engsn"]
+
+[sub_resource type="Gradient" id="Gradient_rooea"]
+colors = PackedColorArray(1, 0.776777, 0.489566, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_engsn"]
+gradient = SubResource("Gradient_rooea")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_engsn"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -100, 0)
+spread = 30.0
+gravity = Vector3(0, 0, 10)
+scale_min = 0.2
+scale_max = 0.5
+color_ramp = SubResource("GradientTexture1D_engsn")
+
+[sub_resource type="Curve" id="Curve_1whn5"]
+_data = [Vector2(0.0177936, 0.88563), 0.0, 0.0, 0, 0, Vector2(0.960854, 0.16129), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8i8rb"]
+curve = SubResource("Curve_1whn5")
+
+[sub_resource type="Curve" id="Curve_engsn"]
+_data = [Vector2(0, 0.552053), 0.0, 0.0, 0, 0, Vector2(0.658363, 1), 0.0, 0.0, 0, 0, Vector2(0.992883, 0.609237), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_1whn5"]
+curve = SubResource("Curve_engsn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8i8rb"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+direction = Vector3(100, 0, 0)
+spread = 30.0
+initial_velocity_min = 600.0
+initial_velocity_max = 1000.0
+gravity = Vector3(100, -9.8, 0)
+scale_min = 0.3
+scale_max = 0.6
+scale_curve = SubResource("CurveTexture_1whn5")
+color = Color(0.909804, 1, 1, 1)
+alpha_curve = SubResource("CurveTexture_8i8rb")
+turbulence_enabled = true
+turbulence_noise_strength = 2.61
+turbulence_noise_scale = 5.552
+turbulence_noise_speed_random = 0.5
+
+[node name="BlasterBloom" type="Node2D"]
+
+[node name="BloomEffect" type="GPUParticles2D" parent="."]
+rotation = 1.5708
+emitting = false
+amount = 1
+texture = ExtResource("1_rooea")
+lifetime = 0.1
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_engsn")
+
+[node name="BlasterSmoke" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 20
+texture = ExtResource("2_engsn")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.5
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_8i8rb")

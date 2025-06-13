@@ -1,0 +1,64 @@
+[gd_scene load_steps=11 format=3 uid="uid://0mm6mgomt3fd"]
+
+[ext_resource type="Texture2D" uid="uid://lmtdaqhl7jsh" path="res://graphics/objects/ventilation_hole.png" id="1_tsb1a"]
+[ext_resource type="Texture2D" uid="uid://degexlv02th61" path="res://graphics/decals/white.png" id="2_2mcvv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2mcvv"]
+radius = 89.0
+
+[sub_resource type="Curve" id="Curve_f0qoe"]
+bake_resolution = 104
+_data = [Vector2(0, 0.15176), 0.0, 0.0, 0, 0, Vector2(0.231317, 0.437683), 0.472615, 0.472615, 0, 0, Vector2(0.345196, 0.628299), 0.730405, 0.730405, 0, 0, Vector2(0.505338, 0.790323), 1.12764, 1.12764, 0, 0, Vector2(0.704626, 0.599707), -0.315077, -0.315077, 0, 0, Vector2(1, 0.332845), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="CurveTexture" id="CurveTexture_x0mrg"]
+curve = SubResource("Curve_f0qoe")
+
+[sub_resource type="Gradient" id="Gradient_2mcvv"]
+offsets = PackedFloat32Array(0, 0.0666667, 0.517647, 0.705882, 1)
+colors = PackedColorArray(0, 0, 0, 0.384314, 0.6, 0.6, 0.6, 0.52549, 0.43, 0.43, 0.43, 0.909804, 0.93, 0.93, 0.93, 0.8, 1, 1, 1, 0.815686)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f0qoe"]
+gradient = SubResource("Gradient_2mcvv")
+
+[sub_resource type="Curve" id="Curve_pow88"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xo8ij"]
+curve = SubResource("Curve_pow88")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tsb1a"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 0, 5)
+emission_shape = 1
+emission_sphere_radius = 50.0
+angle_min = 1.07288e-05
+angle_max = 10.0
+velocity_pivot = Vector3(3, 0, 0)
+direction = Vector3(9, 0, 0)
+spread = 39.194
+gravity = Vector3(100, -300, 10)
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_xo8ij")
+scale_over_velocity_min = 21.94
+scale_over_velocity_max = 100.3
+color_ramp = SubResource("GradientTexture1D_f0qoe")
+alpha_curve = SubResource("CurveTexture_x0mrg")
+turbulence_enabled = true
+
+[node name="SteamVent" type="StaticBody2D"]
+scale = Vector2(1.66113, 1.45788)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2mcvv")
+
+[node name="VentilationHole" type="Sprite2D" parent="."]
+texture = ExtResource("1_tsb1a")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, 1)
+amount = 100
+texture = ExtResource("2_2mcvv")
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_tsb1a")

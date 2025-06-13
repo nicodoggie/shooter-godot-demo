@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://1bh4uwh2gi2i"]
+
+[ext_resource type="Texture2D" uid="uid://7n2df6t2avso" path="res://graphics/player/player.png" id="1_dovo2"]
+[ext_resource type="Script" uid="uid://44xa8tk0ltm" path="res://scenes/player/player.gd" id="1_lvxji"]
+[ext_resource type="PackedScene" uid="uid://7jlo77tuujh7" path="res://scenes/projectiles/blaster_bloom.tscn" id="3_gmlin"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lvxji"]
+radius = 66.0076
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 31
+script = ExtResource("1_lvxji")
+
+[node name="PlayerImage" type="Sprite2D" parent="."]
+position = Vector2(36, 2)
+rotation = 1.5708
+texture = ExtResource("1_dovo2")
+
+[node name="PlayerCollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lvxji")
+
+[node name="LaserTimer" type="Timer" parent="."]
+wait_time = 0.25
+
+[node name="GrenadeTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="LaserStartPosition" type="Node2D" parent="."]
+
+[node name="LaserPositionLeft" type="Marker2D" parent="LaserStartPosition"]
+position = Vector2(130, 12)
+
+[node name="BlasterBloomLeft" parent="LaserStartPosition/LaserPositionLeft" instance=ExtResource("3_gmlin")]
+scale = Vector2(0.5, 0.5)
+
+[node name="LaserPositionCenter" type="Marker2D" parent="LaserStartPosition"]
+position = Vector2(133, 21)
+
+[node name="BlasterBloomCenter" parent="LaserStartPosition/LaserPositionCenter" instance=ExtResource("3_gmlin")]
+scale = Vector2(0.5, 0.5)
+
+[node name="LaserPositionRight" type="Marker2D" parent="LaserStartPosition"]
+position = Vector2(130, 30)
+
+[node name="BlasterBloomRight" parent="LaserStartPosition/LaserPositionRight" instance=ExtResource("3_gmlin")]
+scale = Vector2(0.5, 0.5)
+
+[node name="GrenadeStartPosition" type="Node2D" parent="."]
+
+[node name="GrenadePosition" type="Marker2D" parent="GrenadeStartPosition"]
+position = Vector2(85, 30)
+
+[connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]
+[connection signal="timeout" from="GrenadeTimer" to="." method="_on_grenade_timer_timeout"]
