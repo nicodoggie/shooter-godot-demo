@@ -1,3 +1,5 @@
+class_name BaseLevel
+
 extends Node2D
 
 var laser_scene: PackedScene = preload("res://scenes/projectiles/laser.tscn")
@@ -7,15 +9,7 @@ var grenade_scene: PackedScene = preload("res://scenes/projectiles/grenade.tscn"
 @export var interior_zoom: Vector2 = Vector2(1, 1)
 
 func _ready():
-	$Player/Camera2D.zoom = overworld_zoom
-
-func _on_gate_body_gate_entered(body: Node2D) -> void:
-	print_debug(body.name, " entered the gate")
-	var tween = create_tween()
-	tween.tween_property(body, "init_speed", 0, 0.2)
-
-func _on_gate_body_gate_exited(body: Node2D) -> void:
-	print_debug(body.name, " exited the gate")
+	$Player/Camera2D.zoom = overworld_zoom 
 
 func _on_player_laser_shot(player: Player, marker: Marker2D) -> void:
 	print_debug(player.name, " shot a laser at level ", $".".name)
@@ -41,11 +35,10 @@ func _on_player_laser_hit(laser: Laser, player: Player, target: Node2D) -> void:
 	print("Player", player.name, "'s laser hit ", target.name)
 
 	if target.has_method("hit"):
-		target.hit(player, laser)
+		target.hit(laser, player)
 	
 	laser.queue_free()
 	
-
 func _on_player_grenade_shot(player: Player, marker: Marker2D) -> void:
 	print_debug(player.name, " threw a grenade at level ", $".".name)
 	
@@ -65,15 +58,3 @@ func _on_player_grenade_empty(player: Player) -> void:
 func _on_grenade_stopped(grenade: Grenade) -> void:
 	print_debug(grenade.name, ' grenade stopped.')
 	grenade.explode()
-
-
-func _on_house_player_entered(house: Area2D, player: Player) -> void:
-	print_debug(player.name, " entered the ", house.name)
-	var tween = get_tree().create_tween()
-	tween.tween_property(player.get_node("Camera2D"), "zoom", interior_zoom, 1).set_trans(Tween.TRANS_QUAD)
-
-
-func _on_house_player_exited(house: Area2D, player: Player) -> void:
-	print_debug(player.name, " exited the ", house.name)
-	var tween = get_tree().create_tween()
-	tween.tween_property(player.get_node("Camera2D"), "zoom", overworld_zoom, 1).set_trans(Tween.TRANS_QUAD)
