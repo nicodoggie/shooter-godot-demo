@@ -9,7 +9,7 @@ var grenade_scene: PackedScene = preload("res://scenes/projectiles/grenade.tscn"
 @export var interior_zoom: Vector2 = Vector2(1, 1)
 
 func _ready():
-	$Player/Camera2D.zoom = overworld_zoom 
+	$Player/Camera2D.zoom = overworld_zoom
 
 func _on_player_laser_shot(player: Player, marker: Marker2D) -> void:
 	print_debug(player.name, " shot a laser at level ", $".".name)
@@ -25,14 +25,16 @@ func _on_player_laser_shot(player: Player, marker: Marker2D) -> void:
 	laser.player = player
 	laser.position = marker.global_position
 	laser.rotation = player.global_rotation
-
+	
+	Globals.player_ammo = player.ammo
+	$UI.update_ammo_ui()
 	$Projectiles.add_child(laser)
 
 func _on_player_laser_empty(player: Player) -> void:
 	print(player.name, " tried to shoot an empty laser at level ", $".".name)
 
 func _on_player_laser_hit(laser: Laser, player: Player, target: Node2D) -> void:
-	print("Player", player.name, "'s laser hit ", target.name)
+	print(player.name, "'s laser hit ", target.name)
 
 	if target.has_method("hit"):
 		target.hit(laser, player)
@@ -49,6 +51,9 @@ func _on_player_grenade_shot(player: Player, marker: Marker2D) -> void:
 	grenade.throw()
 	grenade.position = marker.global_position
 	grenade.linear_velocity = Vector2.from_angle(player.global_rotation).normalized() * grenade.speed
+	
+	Globals.player_grenades = player.grenades
+	$UI.update_grenade_ui()
 
 	$Projectiles.add_child(grenade)
 
@@ -58,3 +63,11 @@ func _on_player_grenade_empty(player: Player) -> void:
 func _on_grenade_stopped(grenade: Grenade) -> void:
 	print_debug(grenade.name, ' grenade stopped.')
 	grenade.explode()
+
+
+func _on_player_player_hit(player: Player) -> void:
+	print_debug(player.name, " was hit")
+	$UI/MarginContainer/HealthBar.value = player.health
+
+func _on_teleport_body_entered(_body: Node2D) -> void:
+	TransitionLayer.change_scene("res://scenes/levels/outside.tscn")

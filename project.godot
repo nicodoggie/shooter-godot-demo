@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="Shooter"
-run/main_scene="uid://k7vbjjk7f0ow"
+run/main_scene="uid://cerjteujuv5x1"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Globals="*res://globals/globals.gd"
+TransitionLayer="*res://globals/transition_layer.tscn"
 
 [display]
 

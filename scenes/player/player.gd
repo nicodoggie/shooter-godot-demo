@@ -2,8 +2,9 @@ class_name Player
 
 extends CharacterBody2D
 
+signal player_hit(player: Player)
 signal laser_shot(player: Player, marker: Marker2D)
-signal laser_hit(player: Player, body: Node2D)
+#signal laser_hit(player: Player, body: Node2D)
 signal laser_empty(player: Player)
 signal grenade_shot(player: Player, marker: Marker2D)
 signal grenade_empty(player: Player)
@@ -11,14 +12,45 @@ signal grenade_empty(player: Player)
 var can_laser: bool = true
 var can_grenade: bool = true
 
+# Stats
+@export var max_health = 100
+@export var health = 100
 @export var ammo = 50
+@export var max_ammo = 50
 @export var grenades = 5
+@export var max_grenades = 5
+
 @export var init_speed = 500
 
 var angle = -PI / 2
 
+func load_state():
+	if Globals.player_init:
+		ammo = Globals.player_ammo
+		max_ammo = Globals.player_max_ammo
+		grenades = Globals.player_grenades
+		max_grenades = Globals.player_max_grenades
+		health = Globals.player_health
+		max_health = Globals.player_max_health
+	else:
+		Globals.player_ammo = ammo
+		Globals.player_max_ammo = max_ammo
+		Globals.player_grenades = grenades
+		Globals.player_max_grenades = max_grenades
+		Globals.player_health = health
+		Globals.player_max_health = max_health
+		Globals.player_init = true
+
 func _ready():
 	print("player loaded")
+	load_state()
+
+func hit(projectile: Node2D, _source: Node2D):
+	if projectile.has_method("damage"):
+		health -= projectile.damage()
+		if health < 0:
+			health = 0
+	player_hit.emit($".")
 	
 func _process(_delta):
 	var speed = init_speed

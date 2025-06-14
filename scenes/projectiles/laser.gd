@@ -2,7 +2,7 @@ class_name Laser
 extends Area2D
 
 signal laser_hit(laser: Laser, player: Player, target: Node2D)
-signal laser_timeout(laser: Laser)
+#signal laser_timeout(laser: Laser)
 
 @export var speed: int = 1000
 var player: Player = null

@@ -11,3 +11,6 @@ func _process(_delta):
 	
 func hit(source: Node2D, projectile: Node2D):
 	print(name, ' was hit by ', source.name, "'s ", projectile.name)
+
+func damage():
+	return 10

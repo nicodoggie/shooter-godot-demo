@@ -105,6 +105,5 @@ scale = Vector2(0.507558, 0.507558)
 
 [connection signal="player_entered" from="Ground/House" to="." method="_on_house_player_entered"]
 [connection signal="player_exited" from="Ground/House" to="." method="_on_house_player_exited"]
-[connection signal="laser_hit" from="Player" to="." method="_on_player_laser_hit"]
 [connection signal="body_gate_entered" from="Gate" to="." method="_on_gate_body_gate_entered"]
 [connection signal="body_gate_exited" from="Gate" to="." method="_on_gate_body_gate_exited"]
