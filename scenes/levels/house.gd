@@ -7,4 +7,4 @@ func _on_body_entered(body: Node2D) -> void:
 	player_entered.emit($".", body)	
 
 func _on_body_exited(body: Node2D) -> void:
-	player_exited.emit($".", body)
+	player_exited.emit(self, body)

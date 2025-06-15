@@ -8,6 +8,10 @@
 scale = Vector2(1, 0.998386)
 script = ExtResource("1_xb4v1")
 
+[node name="Decals" type="Node2D" parent="."]
+
+[node name="Ground" type="Node2D" parent="."]
+
 [node name="Projectiles" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
@@ -18,12 +22,19 @@ position = Vector2(447, 588.951)
 zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
 
+[node name="Enemies" type="Node2D" parent="."]
+
 [node name="Lighting" type="Node2D" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("3_ukglk")]
 
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Infestation" type="Node2D" parent="."]
+
 [connection signal="grenade_empty" from="Player" to="." method="_on_player_grenade_empty"]
 [connection signal="grenade_shot" from="Player" to="." method="_on_player_grenade_shot"]
+[connection signal="item_received" from="Player" to="." method="_on_player_item_received"]
 [connection signal="laser_empty" from="Player" to="." method="_on_player_laser_empty"]
 [connection signal="laser_shot" from="Player" to="." method="_on_player_laser_shot"]
 [connection signal="player_hit" from="Player" to="." method="_on_player_player_hit"]

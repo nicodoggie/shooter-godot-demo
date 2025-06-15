@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4j24613kjcce"]
+
+[ext_resource type="Texture2D" uid="uid://cut31v2ttpx6d" path="res://graphics/enemies/scout.png" id="1_i70sm"]
+[ext_resource type="Script" uid="uid://cuouueqqd7sub" path="res://scenes/enemies/scout.gd" id="1_ns734"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ns734"]
+radius = 60.0333
+
+[node name="Scout" type="CharacterBody2D" groups=["Entity", "Scouts"]]
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_ns734")
+metadata/_edit_horizontal_guides_ = [150.0, -150.0, 200.0, -200.0, -104.0]
+metadata/_edit_vertical_guides_ = [500.0, 650.0, 701.0]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, 26)
+rotation = 1.5708
+texture = ExtResource("1_i70sm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-41, 0)
+shape = SubResource("CircleShape2D_ns734")
+
+[node name="AttackRange" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackRange"]
+position = Vector2(9, 0)
+polygon = PackedVector2Array(0, -2, 649, -200, 683, -104, 700, -1, 683, 107, 649, 200)
+
+[node name="LaserStartPosition" type="Node2D" parent="."]
+
+[node name="Left" type="Marker2D" parent="LaserStartPosition"]
+position = Vector2(71, -29)
+
+[node name="Right" type="Marker2D" parent="LaserStartPosition"]
+position = Vector2(71, 16)
+
+[node name="LaserCooldown" type="Timer" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_right = 4.0
+offset_bottom = 27.0
+value = 100.0
+
+[connection signal="body_entered" from="AttackRange" to="." method="_on_attack_range_body_entered"]
+[connection signal="body_exited" from="AttackRange" to="." method="_on_attack_range_body_exited"]
+[connection signal="timeout" from="LaserCooldown" to="." method="_on_laser_cooldown_timeout"]

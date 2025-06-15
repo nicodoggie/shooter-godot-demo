@@ -9,7 +9,7 @@ func _on_gate_body_gate_entered(body: Node2D) -> void:
 	TransitionLayer.change_scene("res://scenes/levels/inside.tscn")
 
 func _on_gate_body_gate_exited(body: Node2D) -> void:
-	print_debug(body.name, " exited the gate")
+	print_debug(body.name, " exited the gate") 
 
 func _on_house_player_entered(house: Area2D, player: Variant) -> void:
 	print_debug(player.name, " entered the ", house.name)

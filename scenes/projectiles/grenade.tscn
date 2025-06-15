@@ -15,7 +15,7 @@ radius = 19.0263
 
 [sub_resource type="Animation" id="Animation_oqjs3"]
 resource_name = "Explosion"
-length = 22.0
+length = 2.4
 step = 0.041
 tracks/0/type = "method"
 tracks/0/imported = false
@@ -206,3 +206,9 @@ visible = false
 texture = ExtResource("3_3382y")
 hframes = 8
 vframes = 8
+
+[node name="DamageTimeout" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="DamageTimeout" to="." method="_on_damage_timeout_timeout"]

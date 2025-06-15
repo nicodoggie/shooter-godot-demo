@@ -5,7 +5,10 @@ signal laser_hit(laser: Laser, player: Player, target: Node2D)
 #signal laser_timeout(laser: Laser)
 
 @export var speed: int = 1000
-var player: Player = null
+var source: Node2D = null
+
+func get_damage():
+	return 10
 
 func _ready():
 	$DissipationTimer.start()
@@ -15,10 +18,8 @@ func _process(delta):
 	position += speed * delta * direction
 
 func _on_body_entered(body: Node2D) -> void:
-	print_debug(body.name, " was hit by", name)
-	laser_hit.emit($".", player, body)
+	laser_hit.emit(self, source, body)
 	queue_free()
 
 func _on_dissipation_timer_timeout() -> void:
-	print_debug("Freeing laser instance ", $".")
 	queue_free()

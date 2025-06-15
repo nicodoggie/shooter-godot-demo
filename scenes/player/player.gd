@@ -2,12 +2,16 @@ class_name Player
 
 extends CharacterBody2D
 
-signal player_hit(player: Player)
+signal player_hit(player: Player, source: Node2D)
+signal player_destroyed(player: Player)
 signal laser_shot(player: Player, marker: Marker2D)
 #signal laser_hit(player: Player, body: Node2D)
 signal laser_empty(player: Player)
 signal grenade_shot(player: Player, marker: Marker2D)
 signal grenade_empty(player: Player)
+
+signal item_received(player: Player, item: Item)
+# signal item_ignored(player: Player, item: Item)
 
 var can_laser: bool = true
 var can_grenade: bool = true
@@ -24,37 +28,32 @@ var can_grenade: bool = true
 
 var angle = -PI / 2
 
-func load_state():
-	if Globals.player_init:
-		ammo = Globals.player_ammo
-		max_ammo = Globals.player_max_ammo
-		grenades = Globals.player_grenades
-		max_grenades = Globals.player_max_grenades
-		health = Globals.player_health
-		max_health = Globals.player_max_health
-	else:
-		Globals.player_ammo = ammo
-		Globals.player_max_ammo = max_ammo
-		Globals.player_grenades = grenades
-		Globals.player_max_grenades = max_grenades
-		Globals.player_health = health
-		Globals.player_max_health = max_health
-		Globals.player_init = true
-
 func _ready():
-	print("player loaded")
-	load_state()
+	TransitionLayer.connect("scene_changing", _on_transition_scene_changing)
+	TransitionLayer.connect("scene_changed", _on_transition_scene_changed)
 
-func hit(projectile: Node2D, _source: Node2D):
-	if projectile.has_method("damage"):
-		health -= projectile.damage()
+func hit(projectile: Node2D, source: Node2D = null):
+	if projectile.has_method("get_damage"):
+		health -= projectile.get_damage()
+		print(health)
 		if health < 0:
 			health = 0
-	player_hit.emit($".")
+		if health == 0:
+			player_destroyed.emit(self)
+			hide()
+
+	print('Player hit by ', projectile.name)
+	player_hit.emit(self, source)
+	
+func get_shot_position():
+	var laser_positions = $LaserStartPosition.get_children()
+	var random_node = randi_range(0, laser_positions.size() - 1)
+	return laser_positions[random_node]
 	
 func _process(_delta):
 	var speed = init_speed
 	var direction = Input.get_vector("left", "right", "up", "down")
+	Globals.current_player_pos = global_position
 	
 	if Input.is_action_pressed("run"):
 		speed = 3 * init_speed
@@ -68,15 +67,11 @@ func _process(_delta):
 	if Input.is_action_pressed("primary action") and can_laser:
 		can_laser = false
 		$LaserTimer.start()
-		var laser_positions = $LaserStartPosition.get_children()
 		
 		if ammo > 0:
 			ammo -= 1
-			var random_node = randi_range(0, laser_positions.size() - 1)
-			var selected_marker = laser_positions[random_node]
 			
-			laser_shot.emit($".", selected_marker)
-			print("pew ", ammo)
+			laser_shot.emit($".")
 		else:
 			laser_empty.emit($".")
 			print("out of ammo")
@@ -92,13 +87,40 @@ func _process(_delta):
 			var selected_marker = grenade_positions[random_node]
 			
 			grenade_shot.emit($".", selected_marker)
-			print("boooom ", grenades)
 		else:
 			grenade_empty.emit($".")
 			print("out of grenades")
+			
+func add_item(item: Item):
+	var should_receive = true
+	match item.type:
+		'laser':
+			if ammo == max_ammo:
+				should_receive = false
+			elif item.amount + ammo > max_ammo:
+				ammo = max_ammo
+			else:
+				ammo += item.amount 
+		'grenade':
+			if grenades == max_grenades:
+				should_receive = false
+			elif item.amount + grenades > max_grenades:
+				grenades = max_grenades
+			else:
+				grenades += item.amount
+		'health':
+			health = max_health
+	item_received.emit($".", item)
+	return should_receive
 
 func _on_laser_timer_timeout() -> void:
 	can_laser = true
 
 func _on_grenade_timer_timeout() -> void:
 	can_grenade = true
+
+func _on_transition_scene_changing():
+	Globals.save_player_state($".")
+
+func _on_transition_scene_changed():
+	Globals.load_player_state($".")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://cerjteujuv5x1"]
+[gd_scene load_steps=16 format=4 uid="uid://cerjteujuv5x1"]
 
 [ext_resource type="PackedScene" uid="uid://k7vbjjk7f0ow" path="res://scenes/levels/base_level.tscn" id="1_2s4ok"]
 [ext_resource type="Texture2D" uid="uid://bl1w071qjv41s" path="res://graphics/ground/stones.png" id="2_vo2ov"]
@@ -7,22 +7,21 @@
 [ext_resource type="Texture2D" uid="uid://c6hg4dy66xbpg" path="res://graphics/decals/moss/moss_1.png" id="3_ti38e"]
 [ext_resource type="TileSet" uid="uid://c7u1fs05tv8x7" path="res://scenes/levels/level.tres" id="3_tn0yi"]
 [ext_resource type="Texture2D" uid="uid://b72j8kxesy5wx" path="res://graphics/decals/moss/moss_3.png" id="4_tn0yi"]
+[ext_resource type="PackedScene" uid="uid://ditdu2td1u8xa" path="res://scenes/items/item.tscn" id="4_xqqjy"]
 [ext_resource type="Texture2D" uid="uid://bcvgbmoolrhu6" path="res://graphics/decals/moss/moss_4.png" id="5_xorrk"]
 [ext_resource type="PackedScene" uid="uid://0mm6mgomt3fd" path="res://scenes/objects/steam_vent.tscn" id="6_wq65m"]
 [ext_resource type="PackedScene" uid="uid://7fssx8jaj5ab" path="res://scenes/levels/house.tscn" id="7_qvsb0"]
 [ext_resource type="PackedScene" uid="uid://dr3x7rf77f6cw" path="res://scenes/objects/box.tscn" id="7_xqqjy"]
 [ext_resource type="PackedScene" uid="uid://d4enksvcycwcv" path="res://scenes/objects/light_fan_animation.tscn" id="9_tn0yi"]
 [ext_resource type="PackedScene" uid="uid://cfefvdp4of3lp" path="res://scenes/enemies/drone.tscn" id="10_xorrk"]
+[ext_resource type="PackedScene" uid="uid://d4j24613kjcce" path="res://scenes/enemies/scout.tscn" id="14_ex6t8"]
 
 [node name="Outside" instance=ExtResource("1_2s4ok")]
 script = ExtResource("2_wq65m")
 
-[node name="Ground" type="Node2D" parent="." index="0"]
-metadata/_edit_lock_ = true
-
 [node name="Stones" type="Sprite2D" parent="Ground" index="0"]
 texture_repeat = 2
-position = Vector2(200, 2111.41)
+position = Vector2(356, 2135.45)
 scale = Vector2(0.995763, 1.13674)
 texture = ExtResource("2_vo2ov")
 region_enabled = true
@@ -97,11 +96,26 @@ scale = Vector2(0.507558, 0.507558)
 autoplay = "default"
 frame_progress = 0.0637899
 
-[node name="Drone" parent="." index="3" instance=ExtResource("10_xorrk")]
+[node name="Drone" parent="." index="2" instance=ExtResource("10_xorrk")]
 position = Vector2(4006.61, 2898.3)
 scale = Vector2(0.507558, 0.507558)
 
-[node name="Gate" parent="." index="4" instance=ExtResource("2_x73sx")]
+[node name="Gate" parent="." index="3" instance=ExtResource("2_x73sx")]
+
+[node name="Scout" parent="Enemies" index="0" instance=ExtResource("14_ex6t8")]
+position = Vector2(329, 1093.77)
+
+[node name="Scout2" parent="Enemies" index="1" instance=ExtResource("14_ex6t8")]
+position = Vector2(137, 874.411)
+rotation = -3.06453
+
+[node name="Scout3" parent="Enemies" index="2" instance=ExtResource("14_ex6t8")]
+position = Vector2(608.396, 796.693)
+rotation = -0.62574
+
+[node name="Item" parent="Items" index="0" instance=ExtResource("4_xqqjy")]
+position = Vector2(2860.32, -187.785)
+scale = Vector2(0.995763, 1.13674)
 
 [connection signal="player_entered" from="Ground/House" to="." method="_on_house_player_entered"]
 [connection signal="player_exited" from="Ground/House" to="." method="_on_house_player_exited"]
